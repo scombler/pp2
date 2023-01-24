@@ -1,0 +1,6 @@
+x = str(2)
+y = int(2)
+z = float(2)
+print(x)
+print(y)
+print(z)
