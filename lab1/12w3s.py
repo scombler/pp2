@@ -1,4 +1,2 @@
-x = y = z = "Orange"
-print(x)
-print(y)
-print(z)
+x = 2
+X = "Mark"  # X won't overwrite x

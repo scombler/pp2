@@ -1,6 +1,4 @@
-x = "awesome"
-
-def f():
-    print("Python is " + x)
-
-f()
+x = "Python"
+y = "is"
+z = "awesome"
+print(x, y, z)

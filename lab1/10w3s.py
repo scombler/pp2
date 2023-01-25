@@ -1,13 +1,6 @@
-myvar = "Mark"
-my_var = "Mark"
-_my_var = "Mark"
-myVar = "Mark"
-MYVAR = "Mark"
-myvar2 = "Mark"
-
-''' 
-illegal variable names:
-2myvar = "John"
-my-var = "John"
-my var = "John" 
-'''
+x = int(2)      # x will be 2
+y = str(2)      # y will be '2'
+z = float(2)    # z will be 2.0
+print(x)
+print(y)
+print(z)

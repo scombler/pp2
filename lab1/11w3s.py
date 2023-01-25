@@ -1,4 +1,4 @@
-x, y, z = "Grapes", "Orange", "Kiwi"
-print(x)
-print(y)
-print(z)
+x = 2
+y = "Mark"  # is the same as 'Mark'
+print(type(x))
+print(type(y))
