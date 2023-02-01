@@ -1,10 +1,7 @@
 def f():
     return True
 
-print(f())
-
-
-def f1():
-    return False
-
-print(f1())
+if f():
+    print("YES!")
+else:
+    print("NO!")
