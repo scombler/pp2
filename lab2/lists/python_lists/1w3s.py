@@ -1,5 +1,5 @@
-mylist = ["grapes", "orange", "watermelon"]
-
+thislist = ["watermelon", "melon", "coconut"]
+print(thislist)
 
 # list is like a vector.
 # list == square brackets
