@@ -1,4 +1,5 @@
-# with list comprehension:
-list = ["universe", "galaxy", "solar system", "stars", "planets", "moons"]
-newlist = [x for x in list if "a" in x]
+fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
+
+newlist = [x for x in fruits if x != "apple"]
+
 print(newlist)

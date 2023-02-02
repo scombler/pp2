@@ -6,7 +6,7 @@ car = {
 
 x = car.items()
 
-print(x)
+print(x) 
 
 car["color"] = "silver"
 

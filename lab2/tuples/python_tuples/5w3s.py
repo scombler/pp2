@@ -1,6 +1,6 @@
-mytuple = ("galaxy",)
-print(type(mytuple))
+tuple1 = ("galaxy", "nebulae", "quasar")
+tuple2 = (1, 2, 3)
+tuple3 = (True, False, False)
 
-# not a tuple
-mytuple = ("galaxy")
-print(type(mytuple))
+# a tuple can contain different data types:
+tuple4 = ("abc", 34, True, 40, "male")

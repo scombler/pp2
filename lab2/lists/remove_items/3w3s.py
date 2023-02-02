@@ -1,4 +1,4 @@
-# if u don't specify the index, the pop() method removes the last item:
+# the del() keyword also removes the specified index:
 thislist = ["saturn", "earth", "neptune"]
-thislist.pop()
+del thislist[0]   # remove the first item.
 print(thislist)

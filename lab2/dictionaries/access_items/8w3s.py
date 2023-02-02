@@ -1,4 +1,3 @@
-# items()
 car = {
     "brand": "Ford",
     "model": "Mustang",
@@ -6,5 +5,9 @@ car = {
 }
 
 x = car.items()
+
+print(x)
+
+car["color"] = "silver"
 
 print(x)

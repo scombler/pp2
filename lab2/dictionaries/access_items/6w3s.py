@@ -1,4 +1,3 @@
-# change a originally value:
 car = {
     "brand": "Ford",
     "model": "Mustang",
@@ -7,8 +6,8 @@ car = {
 
 x = car.values()
 
-print(x) 
+print(x)
 
-car["year"] = 2020
+car["color"] = "silver"
 
 print(x)

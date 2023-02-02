@@ -1,3 +1,4 @@
-# the del() keyword can also delete the list completely:
+# the clear() methods empties the list, the list still remains, but it has no content:
 thislist = ["sun", "earth", "moon"]
-del thislist
+thislist.clear()
+print(thislist)

@@ -1,4 +1,3 @@
-# the del() keyword also removes the specified index:
-thislist = ["saturn", "earth", "neptune"]
-del thislist[0]   # remove the first item.
-print(thislist)
+# the del() keyword can also delete the list completely:
+thislist = ["sun", "earth", "moon"]
+del thislist

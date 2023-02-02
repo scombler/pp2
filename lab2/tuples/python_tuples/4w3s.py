@@ -1,2 +1,6 @@
-mytuple = ("galaxy", "nebulae", "quasar")
-print(len(mytuple))
+mytuple = ("galaxy",)
+print(type(mytuple))
+
+# not a tuple
+mytuple = ("galaxy")
+print(type(mytuple))

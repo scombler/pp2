@@ -1,2 +1,2 @@
-mytuple = ("galaxy", "nebulae", "quasar")
-print(type(mytuple))
+mytuple = tuple(("cats", "cheetas", "lions", "tigers"))   # note the double round-brackets
+print(mytuple)

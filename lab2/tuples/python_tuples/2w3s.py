@@ -1,2 +1,2 @@
-mytuple = ("galaxy", "nebulae", "quasar")
+mytuple = ("galaxy", "nebulae", "quasar", "nebulae", "quasar")
 print(mytuple)
