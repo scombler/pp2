@@ -4,3 +4,5 @@ space = ("universe", "galaxy", "solar system", "stars", "planets")
 print(dark)
 print(white)
 print(silver)
+
+# * asterisk

@@ -4,4 +4,4 @@ y = 26
 if y > x:
     print("y is greater than x")  
 elif x == y:
-    print("a and b are equal")
+    print("x and y are equal")
