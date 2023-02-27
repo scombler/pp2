@@ -1,7 +1,7 @@
 import json
 
-with open("\Users\admin\OneDrive\Документы\pp2\tsis2\json\sample_data.json") as file:
-    y = json.load(file)
+x = open("sample.json")
+y = json.load(x)
 
 print("""Interface Status
 ================================================================================
@@ -9,14 +9,14 @@ DN                                                 Description           Speed  
 -------------------------------------------------- --------------------  ------  ------""")
 
 for i in y["imdata"]:
-    x = i["l1PhysIf"]
-    dict1 = x["attributes"]
-    dn = dict1["dn"]
-    speed = dict1["speed"]
-    mtu = dict1["mtu"]
-    y = " "
+    z = i["l1PhysIf"]
+    w = z["attributes"]
+    dn = w["dn"]
+    speed = w["speed"]
+    mtu = w["mtu"]
+    res = " "
     if len(dn) == 41:
-        y += dn + " " *30 + speed + "   " + mtu
+        res += dn + " " *30 + speed + "   " + mtu
     else:
-        y += dn + " " *29 + speed + "   " + mtu
-    print(y)
+        res += dn + " " *29 + speed + "   " + mtu
+    print(res)
