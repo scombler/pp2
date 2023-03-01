@@ -1,6 +1,7 @@
+# write a python program that matches a string that has an 'a' followed by anything, ending in 'b'.
 import re
 
-x = input()
+x = input()  # asdfb -> asdfb
 
 pattern = "^a.*b$"
 
