@@ -3,7 +3,7 @@ import re
 
 x = input()
 
-pattern = "^ab*"
+pattern = ".ab*"
 
 print(re.match(pattern, x))
 print(bool(re.match(pattern, x)))

@@ -3,6 +3,6 @@ import re
 
 x = input()  # asdfb -> asdfb
 
-pattern = "^a.*b$"
+pattern = "a.*b$"
 
 print(re.match(pattern, x))
