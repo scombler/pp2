@@ -1,0 +1,10 @@
+write
+a
+python
+program
+to
+write
+a
+list
+to
+file
