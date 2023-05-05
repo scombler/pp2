@@ -1,20 +1,20 @@
-import psycopg2
 from config import data
+import psycopg2
 
 # connecting to our database :
-config = psycopg2.connect(**data)
+db = psycopg2.connect(**data)
+curr = db.cursor()
 
-curr = config.cursor()
-
-sql = """
-        CREATE TABLE PhoneBook(
-            name VARCHAR PRIMARY KEY,
-            number VARCHAR(11)
+sql = '''
+        CREATE TABLE phonebook(
+            id INT NOT NULL,
+            name VARCHAR(100),
+            number VARCHAR(100)       
     );
-"""
+'''
 
 curr.execute(sql)
 
 curr.close()
-config.commit()
-config.close()
+db.commit()
+db.close()

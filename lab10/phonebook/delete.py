@@ -1,20 +1,17 @@
 import psycopg2
 from config import data
 
-config = psycopg2.connect(**data)
+db = psycopg2.connect(**data)
 
-curr = config.cursor()
+curr = db.cursor()
 
 name = input("Enter the name : ")
 
-upd = """
-        DELETE FROM PhoneBook WHERE name = %s;
-"""
+remove = ''' DELETE FROM phonebook WHERE name = %s ; '''
 
-curr.execute(upd, (name,))
-print("Contact Successfully Deleted")
-
+curr.execute(remove, (name,))
+print("Contact Successfully Deleted!")
 curr.close()
 
-config.commit()
-config.close()
+db.commit()
+db.close()

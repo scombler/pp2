@@ -1,6 +1,6 @@
 data = {
     "host" : "localhost",
-    "database" : "postgres",
+    "database" : "suppliers",
     "user" : "postgres",
     "password" : "123"
 }
