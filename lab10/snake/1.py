@@ -1,68 +1,75 @@
-from random import randrange
-import psycopg2
-import pygame
-import random
-import time
+import pygame as pg
+from random import randrange, randint
+import random, time, psycopg2
 
-username = input()
-conn = psycopg2.connect(
-    host ='localhost',
-    database ='postgres',
-    user ='postgres',
-    password ='123'
+# player enters his/her username :
+username = input("Enter Your Userame : ")
+
+# connecting to our database :
+db = psycopg2.connect(
+    host = "localhost",
+    database = "suppliers",
+    user = "postgres",
+    password = "123"
 )
 
-cursor = conn.cursor()
+curr = db.cursor()
 
-sql = '''
-    SELECT * FROM snake WHERE username = %s;
-'''
-cursor.execute(sql, [username])
-data = cursor.fetchone()
+sql = ''' SELECT * FROM snake WHERE username = %s ; '''
+curr.execute(sql, [username])
+
+data = curr.fetchone()
 
 if data == None:
-    sql = '''
-        INSERT INTO snake VALUES(%s, 0, 0, 0);
-    '''
-    cursor.execute(sql, [username])
-    conn.commit()
+    sql = ''' INSERT INTO snake VALUES(%s, 0, 0, 0) ; '''
+    curr.execute(sql, [username])
+    db.commit()
 
-pygame.init()
-FPS = 3
-clock = pygame.time.Clock()
+# initialization :
+pg.init()
 
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-
-
-WIDTH, HEIGHT = 500, 500
-BLOCK_SIZE= 20
+# creating a window, where the whole process will take place and to watch it :
+w = h = 400
+screen = pg.display.set_mode((w, h))
+pg.display.set_caption("🐍")
+screen.fill((205, 133, 63))
+ 
+# other parammeters :
+block_size = 20 
 highscore = 0
 level = 0
 
-font = pygame.font.SysFont("Verdana", 20, False)
-font1 = pygame.font.SysFont("Verdana", 30, False)
+# setting up prame per second (fps) :
+fps = 5
+clock = pg.time.Clock()
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Snake')
+# fonts : 
+font1 = pg.font.SysFont("Verdana", 20)
+font2 = pg.font.SysFont("Verdana", 30)
 
-running = True
+# theme :
+#pg.mixer.init()
+#pg.mixer.music.load("./music/ssss.mp3")
+#pg.mixer.music.play(-1)
+
+# ending :
+game_over = font2.render("GAME OVER!", True, (76, 0, 153))
+
+# to check the whole process :
+crawling = True
+
 
 class Food:
     def __init__(self):
-        self.x = randrange(0, WIDTH, BLOCK_SIZE)
-        self.y = randrange(0, HEIGHT, BLOCK_SIZE)
+        self.x = randrange(0, w, block_size)
+        self.y = randrange(0, h, block_size)
    
     def draw(self):
-        pygame.draw.rect(screen, RED, (self.x, self.y, BLOCK_SIZE, BLOCK_SIZE)) 
+        pg.draw.rect(screen, (255, 51, 51), (self.x, self.y, block_size, block_size)) 
     
     def redraw(self):
-        self.x = randrange(0, WIDTH, BLOCK_SIZE)
-        self.y = randrange(0, HEIGHT, BLOCK_SIZE)
+        self.x = randrange(0, w, block_size)
+        self.y = randrange(0, h, block_size)
     
 
 class Wall:
@@ -70,151 +77,176 @@ class Wall:
         self.x, self.y = x, y
 
     def draw(self):
-        pygame.draw.rect(screen, BLUE, (self.x, self.y, BLOCK_SIZE, BLOCK_SIZE))
+        pg.draw.rect(screen, (204, 102, 0), (self.x, self.y, block_size, block_size))
 
 class Snake:
     def __init__(self):
-        self.speed = BLOCK_SIZE
+        self.speed = block_size
         self.score = 0
-        self.body = [[40, 40],[500, 500],[520, 520]]
+        self.body = [[40, 40],[500, 500],[520, 520]]   # initial random head coordinates.
         self.dx = self.speed
         self.dy = 0
-        self.destination = ''
-        self.color = BLUE
+        self.destination = ""
+        self.color = (102, 102, 255) # lavender blue
     
     def move(self, events):
         for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT and self.destination != 'right':
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_LEFT and self.destination != "right":
                     self.dx = -self.speed
                     self.dy = 0
-                    self.destination = 'left'
-                if event.key == pygame.K_RIGHT and self.destination != 'left':
+                    self.destination = "left"
+                if event.key == pg.K_RIGHT and self.destination != "left":
                     self.dx = self.speed
                     self.dy = 0
-                    self.destination = 'right'
-                if event.key == pygame.K_UP and self.destination != 'down':
+                    self.destination = "right"
+                if event.key == pg.K_UP and self.destination != "down":
                     self.dx = 0
                     self.dy = -self.speed
-                    self.destination = 'up'
-                if event.key == pygame.K_DOWN and self.destination != 'up':
+                    self.destination = "up"
+                if event.key == pg.K_DOWN and self.destination != "up":
                     self.dx = 0
                     self.dy = self.speed
-                    self.destination = 'down'
+                    self.destination = "down"
+
+        # move the body parts of the snake in x and y to the previous coordinates :
         for i in range(len(self.body) - 1, 0, -1):
             self.body[i][0] = self.body[i - 1][0]
             self.body[i][1] = self.body[i - 1][1]
 
+        # move the head of the snake in x and y to the following coordinates :
         self.body[0][0] += self.dx
         self.body[0][1] += self.dy
 
-       
-        self.body[0][0] %= WIDTH
-        self.body[0][1] %= HEIGHT
+        # collosion occurs between snake and borders :
+        self.body[0][0] %= w
+        self.body[0][1] %= h
 
     def draw(self):
         for block in self.body:
-            pygame.draw.circle(screen, self.color, (block[0] + 10, block[1] + 10), BLOCK_SIZE/2)
+            pg.draw.circle(screen, self.color, (block[0] + 10, block[1] + 10), block_size/2)
 
-    def collide_food(self, f:Food):
+    # a function to check if snake and food cross :
+    def food_collision(self, f:Food):
         if self.body[0][0] == f.x and self.body[0][1] == f.y:
             self.score += random.randint(1, 3)
             self.body.append([500, 500])
 
-    def collide_self(self):
-        global running
+    # condition for the end of the game (if the snake's head collides with its body) :
+    def self_collision(self):
+        global crawling
         if self.body[0] in self.body[1:]:
-            running = False
+            crawling = False
+    
+    # checking if food will appear in the snake's body :
     def check_food(self, f:Food):
         if [f.x, f.y] in self.body:
             f.redraw()
 
 
+# setting up classes :
 s = Snake()
 f = Food()
 
-
+# time shits :
 time_delay = 15000
-timer_event = pygame.USEREVENT + 1 
-pygame.time.set_timer(timer_event, time_delay)
+timer_event = pg.USEREVENT + 1 
+pg.time.set_timer(timer_event, time_delay)
 
-while running:
-    clock.tick(FPS)
-    events = pygame.event.get()
+# game loop :
+while crawling:
+    clock.tick(fps)
+    events = pg.event.get()
     for event in events:
-        if event.type == pygame.QUIT:
-            running = False
+        if event.type == pg.QUIT:
+            crawling = False
         if event.type == timer_event:
             f.redraw()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-           if pygame.mouse.get_pos()[0] >= 440 and pygame.mouse.get_pos()[0] <= 480 and pygame.mouse.get_pos()[1] >= 20 and pygame.mouse.get_pos()[1] <= 60:
-             screen.fill(RED)
-             screen.blit(score, (150, 200))
-             pygame.display.update()
-             time.sleep(3)
+        if event.type == pg.MOUSEBUTTONDOWN:
+           if pg.mouse.get_pos()[0] >= 440 and pg.mouse.get_pos()[0] <= 480 and pg.mouse.get_pos()[1] >= 20 and pg.mouse.get_pos()[1] <= 60:
+            screen.fill((0, 0, 0))
+            screen.blit(score, (100, 180))
+            screen.blit(game_over, (100, 140))
+            pg.display.update()
+            time.sleep(4)
 
-    screen.fill(WHITE)
+    screen.fill((205, 133, 63))
+
+    # conditions to leveling up :
     if s.score >= 3:
         level = 1
-        FPS = 5
+        fps = 5
     if s.score >= 6:
         level = 2
-        FPS = 5
+        fps = 5
     if s.score >= 9:
         level = 3
-        FPS = 6
+        fps += 1
     if s.score >= 12:
         level = 4
-        FPS = 7
+        fps += 1
     if s.score >= 15:
         level = 5
-        FPS = 7
-    walls_coor=  open(f'level{level}.txt', 'r').readlines()
-    
-    walls = []
+        fps += 1
 
-    for i, line in enumerate(walls_coor):
-        for j, each in enumerate(line):
+    # draw walls :
+    wall_maria = open(f"level{level}.txt", "r").readlines() 
+    
+    wall_sina = []
+
+    for i, line in enumerate(wall_maria):   # loop through index and row
+        for j, each in enumerate(line):     # loop through each element in the string
             if each == "#":
-                walls.append(Wall(j * BLOCK_SIZE, i * BLOCK_SIZE))
-    for wall in walls:
+                wall_sina.append(Wall(j * block_size, i * block_size))  # add each wall block to the list
+
+    for wall in wall_sina:
         wall.draw()
+
+        # checking if food will appear in the walls :
         if f.x == wall.x and f.y == wall.y:
             f.redraw()
-        if s.body[0][0] == wall.x and s.body[0][1] == wall.y:
-             screen.fill(RED)
-             screen.blit(score, (150, 200))
-             pygame.display.update()
-             time.sleep(3)
-             running = False
 
+        # stop the game if the snake's head hits the wall :
+        if s.body[0][0] == wall.x and s.body[0][1] == wall.y:
+            crawling = False
+            #pg.mixer.music.stop()
+            screen.fill((0, 0, 0))
+            screen.blit(score, (100, 180))
+            screen.blit(game_over, (100, 140))
+            pg.display.update()
+            time.sleep(4)
+
+    # call all functions :
     f.draw()
     s.draw()
     s.move(events)
-    s.collide_food(f)
-    s.collide_self()
+    s.food_collision(f)
+    s.self_collision()
     s.check_food(f)
     
-    pygame.draw.rect(screen, GREEN, (440, 20, 40, 40))
-    score = font1.render(f'Your score: {s.score}', True, BLACK)
-    text = font.render(f"Score: {s.score}", True, BLACK)
-    text2 = font.render(f"Level: {level}", True, BLACK)
-    screen.blit(text, (5, 0))
-    screen.blit(text2, (5, 30))
-    pygame.display.flip()
-    f_score = s.score
-pygame.quit()
+    #pg.draw.rect(screen, (0, 255, 0), (440, 20, 40, 40))
+    score = font2.render(f"Your Score : {s.score}", True, (76, 0, 153))
+    s_cnt = font1.render(f"score : {s.score}", True, (76, 0, 153))
+    screen.blit(s_cnt, (5, 0))
+    l_cnt = font1.render(f"level : {level}", True, (76, 0, 153))
+    screen.blit(l_cnt, (5, 30))
+    pg.display.flip()
+    curr_score = s.score
 
-if f_score > highscore:
-    highscore = f_score
+pg.quit()
+
+# score shits :
+if curr_score > highscore:  # current score == highscore
+    highscore = curr_score
 
 highscore = str(highscore)
-f_score = str(f_score)
+curr_score = str(curr_score)
 level = str(level)
-sql = '''
-    UPDATE snake SET user_score = %s, highscore = %s, level = %s WHERE username = %s;
-'''
-cursor.execute(sql, [f_score, highscore, level, username])
-conn.commit()
-cursor.close()
-conn.close()
+
+sql = ''' UPDATE snake SET user_score = %s, highscore = %s, level = %s WHERE username = %s ; '''
+
+curr.execute(sql, [curr_score, highscore, level, username])
+
+curr.close()
+db.commit()
+db.close()
