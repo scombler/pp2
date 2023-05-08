@@ -17,11 +17,11 @@ FPS = 60
 clock = pg.time.Clock()
 
 # background music :
-pg.mixer.music.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\music\\background.wav") 
+pg.mixer.music.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\music\\background.wav") 
 pg.mixer.music.play(-1)
 
 # background aka street :
-road = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\images\\road.png")
+road = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\images\\road.png")
 road = pg.transform.scale(road, (w, h))
 
 # fonts :
@@ -29,7 +29,7 @@ font = pg.font.SysFont("Verdana", 20)
 point = pg.font.SysFont("Verdana", 20)
 
 # ending :
-game_over = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\images\\gameover.jpg")
+game_over = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\images\\gameover.jpg")
 game_over = pg.transform.scale(game_over, (w, h))
 
 # other parameters for use in the process :
@@ -40,7 +40,7 @@ score = coin = 0
 class Enemy(pg.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\images\\enemy.png")
+        self.image = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\images\\enemy.png")
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, w - 40), 0) 
 
@@ -57,7 +57,7 @@ class Enemy(pg.sprite.Sprite):
 class Player(pg.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\images\\player.png")  
+        self.image = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\images\\player.png")  
         self.rect = self.image.get_rect()
         self.rect.center = (300, 700)
         
@@ -84,7 +84,7 @@ class Player(pg.sprite.Sprite):
 class Coin(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\images\\coin.png")
+        self.image = pg.image.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\images\\coin.png")
         #self.surf = pg.Surface((30, 30))
         self.rect = self.image.get_rect()
         #self.rect = self.surf.get_rect(center = (random.randint(40, w - 40), 0))
@@ -157,7 +157,7 @@ while moving:
     # condition for collecting coins :
     if pg.sprite.collide_rect(p, c):
         coin += random.randint(1, 4)  # randomly generating coins with different weights on the road.
-        pg.mixer.music.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\music\\yummy.ogg")
+        pg.mixer.music.load("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\music\\yummy.ogg")
         pg.mixer.music.play(start = 0.5)
         c.chow_time()
 
@@ -170,7 +170,7 @@ while moving:
     
     # a condition for a collision between player and enemy, also for game over :
     if pg.sprite.spritecollideany(p, enemies):
-        pg.mixer.Sound("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer (updated)\\music\\crash.wav").play()
+        pg.mixer.Sound("C:\\Users\\admin\\OneDrive\\Документы\\pp2\\lab9\\racer\\music\\crash.wav").play()
         time.sleep(0.5)
 
         screen.blit(game_over, (0, 0)) # display that the game is OVER !
